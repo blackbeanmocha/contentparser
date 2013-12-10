@@ -9,7 +9,7 @@ class Content {
   public $parserProfiles;
   public $fileName;
   
-	public function __construct($userName, $key, $startTime, $endTime, $fileName) {
+   public function __construct($userName, $key, $startTime, $endTime, $fileName) {
 		$this->userName = $name;
 		$this->key = $key;
 		$this->fileName = $fileName;
