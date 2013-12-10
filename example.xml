@@ -1,0 +1,32 @@
+<myContents>
+  <key>I_Donno</key>
+  <username>sdarapuneni</username>
+  <file>test.tgz</file>  
+  <startTime></startTime>
+  <endTime></endTime>
+  
+  <parserProfile name="Test_me">
+    
+    <platform>5000</platform>
+
+    <object type="counter">
+
+      <objectString name="session_discard">
+        <threshold>4</threshold>
+        <operator>&gt;=</operator>
+      </objectString>  
+
+      <objectOperator logicalOp="and"/>
+
+      <objectString name="session_dup_pkt_drop">  
+        <threshold>1</threshold>
+        <operator>=</operator>
+      </objectString>
+    
+      
+    </object>
+  
+  </parserProfile>
+
+</myContents>
+
