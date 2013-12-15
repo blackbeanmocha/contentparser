@@ -4,11 +4,10 @@
   <file>test.tgz</file>  
   <startTime></startTime>
   <endTime></endTime>
+  <platform>5060</platform>
   
   <parserProfile name="Test_me">
     
-    <platform>5000</platform>
-
     <object type="counter">
 
       <objectString name="session_discard">
