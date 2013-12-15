@@ -1,16 +1,19 @@
 <?php
 
 /* include_once all relevant classes */
-include_once "Content.php";
+$CLASSES_DIR = array(
+  "domain/*.php",
+  "util/*php"
+);
+foreach ($CLASSES_DIR as $dir) {
+  foreach (glob($dir) as $filename) {
+      include_once $filename;
+  }    
+}
 include_once "ContentFactory.php";
 include_once "ContentHelper.php";
 include_once "ContentValidator.php";
-include_once "Object.php";
-include_once "ObjectType.php";
-include_once "Counter.php";
-include_once "ParserProfile.php";
-include_once "ParserConstants.php";
-include_once "SystemUtil.php";
+
 
 # main function
 $contentFactory = new ContentFactory();

@@ -25,7 +25,7 @@ Class ContentFactory {
 	
     $parser_profiles_list = array();
     foreach ($my_xml->parserProfile as $parser_profile_xml) {
-      $parserProfile = new ParserProfile($parser_profile_xml["name"], $parser_profile_xml->platform);	
+      $parserProfile = new ParserProfile($parser_profile_xml["name"]);	
       foreach ($parser_profile_xml->object as $parse_object_xml) {
         $objectType = $parse_object_xml["type"];
         $objectString = null;
