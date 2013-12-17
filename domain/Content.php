@@ -13,7 +13,7 @@ class Content {
   
 	public function __construct($userName, $key, $fileName, $platform, $startTime, $endTime) {
 		
-		$this->userName = $name;
+		$this->userName = $userName;
 		$this->key = $key;
 		$this->fileName = $fileName;
 		$this->platform = $platform;
