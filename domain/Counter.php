@@ -5,7 +5,7 @@ class Counter{
 	public $name;
 	public $threshold;
 	public $operator;
-	public $occurrances;
+	public $occurrence;
   
 	public function __construct($name, $threshold, $operator){
 		$this->name = trim($name);
@@ -13,15 +13,15 @@ class Counter{
 		$this->operator = trim($operator);
 	}
   
-	public function addOccurance() {
-		$this->occurances++;
+	public function addOccurence() {
+		$this->occurence++;
 	}
   
-	public function getOccurances() {
-		return $this->occurances;
+	public function getOccurences() {
+		return $this->occurence;
 	}
   
-	public function validateOccurance($extractedValue) {  
+	public function validateOccurence($extractedValue) {  
 		$is_valid = false;
 		switch($this->operator){
 			case ">":
@@ -41,7 +41,7 @@ class Counter{
 			break;
 		}
 		if ($is_valid)  {
-			$this->occurances++;
+			$this->occurence++;
 			return true;
 		} 
 		return false; 
