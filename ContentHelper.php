@@ -19,7 +19,7 @@ class ContentHelper {
 			
 			}	
 		}
-		$pattern .= '--- panio';
+		$pattern .= '--- panio'. '|Elapsed time since last sampling';
 		//$pattern = rtrim($pattern,"|");
 		$extractedPath = $this->content->tsExtractedPath;
 		//$command = "find $extractedPath -name '*dp-monitor*' | egrep -wri '$pattern' $extractedPath";
@@ -40,7 +40,7 @@ class ContentHelper {
 					$objString->validateOccurance($matchers[2]);
 				}
 			} else {
-				print "\n ---- Inside panio ----";
+				//print "\n ---- Inside panio ----";
 			}          
 		}	
   
