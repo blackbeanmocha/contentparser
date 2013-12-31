@@ -25,14 +25,14 @@ Class ContentFactory {
 	
 		$parser_profiles_list = array();
 		foreach ($my_xml->parserProfile as $parser_profile_xml) {
-			$parserProfile = new ParserProfile($parser_profile_xml["name"]);	
+			$parserProfile = new ParserProfile($parser_profile_xml[ParserConstants::NAME]);	
 			foreach ($parser_profile_xml->object as $parse_object_xml) {
-				$objectType = $parse_object_xml["type"];
+				$objectType = $parse_object_xml[ParserConstants::TYPE];
 				$objectString = null;
 				$object = new Object($objectType);
 				foreach ($parse_object_xml->objectString as $parse_object_string_xml) {
 					if($objectType == ObjectType::COUNTER) {
-						$objectString = new Counter($parse_object_string_xml["name"], 
+						$objectString = new Counter($parse_object_string_xml[ParserConstants::NAME], 
 						$parse_object_string_xml->threshold, 
 						$parse_object_string_xml->operator);
 
@@ -44,7 +44,7 @@ Class ContentFactory {
 				}
 				// iterate object operators
 				foreach ($parse_object_xml->objectOperator as $parse_object_operator_xml) {
-					$object->addObjectOperator($parse_object_operator_xml['logicalOp']);
+					$object->addObjectOperator($parse_object_operator_xml[ParserConstants::LOGICAL_OP]);
 				}			
 				$parserProfile->addObject($object);
 			}

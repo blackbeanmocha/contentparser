@@ -20,10 +20,12 @@ class ContentHelper {
 			
 			}	
 		}
-		$pattern .= '--- panio'. '|Elapsed time since last sampling';
+		//$pattern .= '--- panio'. '|Elapsed time since last sampling';
+        $pattern .= ParserConstants::GLOBAL_PANIO_STMT.'|'.ParserConstants::SAMPLING_RATE_STMT; 
 		$extractedPath = $this->content->tsExtractedPath;
-		$command = "find $extractedPath -name '*dp-monitor*' -print | xargs egrep -wri -h '$pattern' ";
-		//$command = "egrep -wri '$pattern' $extractedPath/opt/var.dp0/log/pan/dp-monitor.log";
+		//$command = "find $extractedPath -name '*dp-monitor*' -print | xargs egrep -wri -h '$pattern' ";
+		$command = "find $extractedPath -name ".ParserConstants::MONITOR_FILES_PATTERN." -print | xargs egrep -wri -h '$pattern' ";
+        //$command = "egrep -wri '$pattern' $extractedPath/opt/var.dp0/log/pan/dp-monitor.log";
 		$objStrings_map = $this->getObjectStringsMap();
   
 		print "\n Before Parsing: \n";
@@ -37,21 +39,23 @@ class ContentHelper {
         foreach($results as $match) {
 		    //print "\n $match";
             $currTime = "";
-			if (strpos($match, '--- panio') !== false) {
-                $timeDetails = preg_split("/[---]/", $match);
+			//if (strpos($match, '--- panio') !== false) {
+            if (strpos($match, ParserConstants::GLOBAL_PANIO_STMT) !== false) {
+                $timeDetails = preg_split(ParserConstants::GLOBAL_PANIO_SPLIT_PATTERN, $match);
                 $currTime = trim(trim($timeDetails[0]), ":");
                 $isValidTime = $this->isValidTime($currTime);
 			}
             
-            if(strpos($match, "sampling") && $isValidTime) {
-                preg_match("/(\d+.\d+)/", $match, $samplingDetails);
+            //if(strpos($match, "sampling") && $isValidTime) {
+            if(strpos($match, ParserConstants::SAMPLING_RATE_STMT) && $isValidTime) {
+                preg_match(ParserConstants::SAMPLING_RATE_SPLIT_PATTERN, $match, $samplingDetails);
                 $samplingRate = $samplingDetails[0];
                 $isValidSamplingRate = $this->isValidSamplingRate($samplingRate);
             }
             
             if($isValidTime && $isValidSamplingRate) {
                 //print "\n $match";
-                $matchers = preg_split("/[\s::]+/", $match);
+                $matchers = preg_split(ParserConstants::COUNTER_STMT_SPLIT_PATTERN, $match);
                 $objStrings = $objStrings_map[$matchers[1]];
 			
                 if(sizeof($objStrings) > 0) {
