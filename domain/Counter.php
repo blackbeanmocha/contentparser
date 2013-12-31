@@ -5,7 +5,7 @@ class Counter{
 	public $name;
 	public $threshold;
 	public $operator;
-	public $occurrence;
+	public $occurence;
   
 	public function __construct($name, $threshold, $operator){
 		$this->name = trim($name);
@@ -47,6 +47,9 @@ class Counter{
 		return false; 
 	}
   
+    public function __toString() {
+        return $this->name;
+    }
   
 }
 

@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8" ?><object><objectString><name>session_discard</name><threshold>4</threshold><operator>&gt;=</operator><occurence>1</occurence></objectString><objectString><name>session_dup_pkt_drop</name><threshold>1</threshold><operator>=</operator><occurence>2</occurence></objectString></object>
