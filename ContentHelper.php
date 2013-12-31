@@ -34,10 +34,14 @@ class ContentHelper {
 		foreach($results as $match) {
 			print "\n$match";
 			$matchers = preg_split("/[\s::]+/", $match);
+            //print "\n matchers1: $matchers[1]\n";
 			$objStrings = $objStrings_map[$matchers[1]];
 			if(sizeof($objStrings) > 0) {
 				foreach($objStrings as $objString) {
-					$objString->validateOccurance($matchers[2]);
+                    //print "\n Object String:";
+                    //print_r($objString);
+                    //print "\n";
+					$objString->validateOccurence($matchers[2]);
 				}
 			} else {
 				//print "\n ---- Inside panio ----";
