@@ -65,7 +65,7 @@ class ContentHelper {
 		print "\n After Parsing: \n";
 		print_r($objStrings_map);
         
-        $file = "output.xml";
+        $file = "testdata/output.xml";
         $xml = XMLSerializer::generateValidXmlFromArray($objStrings_map);
         file_put_contents($file, $xml);
 	}
