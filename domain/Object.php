@@ -2,36 +2,43 @@
 
 class Object{
 
-	public $name;
-	public $type;
-	public $object_strings;
-	public $object_operators;
-	
-	public function __construct($type){
-		
-		$this->type =  trim($type);
-		$this->object_strings = array();
-		$this->object_operators = array();
-	}
+    public $objectId;
+    public $objectLabel;
+    public $objectType;
+    public $objectString;
+    public $objectOperator;
+    public $objectLogFiles;
+    public $objectDescription;
+    public $objectThreshold;
+    public $objectThresholdOperator;
+    public $objectTimeWindow;
+    public $createdBy;
+    public $createdDate;
+    public $modifiedBy;
+    public $modifiedDate;
 
-	public function addObjectString($object_string) {
-		
-		array_push($this->object_strings, $object_string);
-	}
+    static function createBuilder() {
+        return new ObjectBuilder();
+    }
 
-	public function addObjectOperator($object_operator) {
-		
-		array_push($this->object_operators, $object_operator);	
-	}
-  
-	public function getObjectString($name) {
-    
-		foreach($this->object_strings as $objString) {
-			if($objString->name == $name)
-				return $objString;
-		}
-    
-	}
+    public function __construct(ObjectBuilder $builder) {
+        
+        $this->objectId = $builder->getObjectId();
+        $this->objectLabel = $builder->getObjectLabel();
+        $this->objectType = $builder->getObjectType();
+        $this->objectString = $builder->getObjectString();
+        $this->objectOperator = $builder->getObjectOperator();
+        $this->objectLogFiles = $builder->getObjectLogFiles();
+        $this->objectDescription = $builder->getObjectDescription();
+        $this->objectThreshold = $builder->getObjectThreshold();
+        $this->objectThresholdOperator = $builder->getObjectThresholdOperator();
+        $this->objectTimeWindow = $builder->getObjectTimeWindow();
+        $this->createdBy = $builder->getCreatedBy();
+        $this->createdDate = $builder->getCreatedDate();
+        $this->modifiedBy = $builder->getModifiedBy();
+        $this->modifiedDate = $builder->getModifiedDate();
+        
+    }
 }
 
 ?>

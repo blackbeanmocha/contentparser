@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<papps_request>
+  <request_id>8</request_id>
+  <request_label>test</request_label>
+  <case_id>123</case_id>
+  <ts_file>20140822_1457_techsupport.tgz</ts_file>
+  <xml_request/>
+  <xml_result/>
+  <username>cchristiansen</username>
+  <request_timerange_start>2014-10-23 18:26:01</request_timerange_start>
+  <request_timerange_end>2014-10-23 18:46:01</request_timerange_end>
+  <request_time>2014-08-30 11:09:25</request_time>
+  <complete_time>0000-00-00 00:00:00</complete_time>
+  <request_test_toggle>0</request_test_toggle>
+  <profile_id-40>
+    <profile_id>40</profile_id>
+    <profile_label>dup_session_profile</profile_label>
+    <profile_description>this profile finds if dup session counter increments</profile_description>
+    <profile_created_by>sdarapuneni</profile_created_by>
+    <profile_create_date>2014-08-26 16:49:31</profile_create_date>
+    <profile_modified_by>cchristiansen</profile_modified_by>
+    <profile_modified_date>2014-08-27 13:07:23</profile_modified_date>
+    <profile_severity>1</profile_severity>
+    <profile_status>1</profile_status>
+    <object_id-12>
+      <object_id>12</object_id>
+      <object_label>dup_session</object_label>
+      <object_type>global_counter</object_type>
+      <object_string>session_dup_pkt_drop</object_string>
+	  <object_operator>and</object_operator>
+      <object_log_files/>
+      <object_description/>
+      <object_treshold>1</object_treshold>
+      <object_treshold_operator>&gt;</object_treshold_operator>
+      <object_time_window>0</object_time_window>
+      <object_created_by>sdarapuneni</object_created_by>
+      <object_create_date>2014-08-26 16:48:43</object_create_date>
+      <object_modified_by>sdarapuneni</object_modified_by>
+      <object_modified_date>2014-08-26 16:49:18</object_modified_date>
+    </object_id-12>
+    <object_id-13>
+      <object_id>13</object_id>
+      <object_label>install_error</object_label>
+      <object_type>global_counter</object_type>
+      <object_string>session_install_error</object_string>
+	  <object_operator>or</object_operator>
+      <object_log_files/>
+      <object_description/>
+      <object_treshold>1</object_treshold>
+      <object_treshold_operator>&gt;</object_treshold_operator>
+	  <object_time_window>0</object_time_window>
+      <object_created_by>sdarapuneni</object_created_by>
+      <object_create_date>2014-08-26 16:54:42</object_create_date>
+      <object_modified_by>sdarapuneni</object_modified_by>
+      <object_modified_date>2014-08-26 16:54:42</object_modified_date>
+    </object_id-13>
+  </profile_id-40>
+</papps_request>
+                      

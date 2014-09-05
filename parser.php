@@ -13,9 +13,15 @@ foreach ($CLASSES_DIR as $dir) {
 }
 
 # main function
-$contentFactory = new ContentFactory();
+/*$contentFactory = new ContentFactory();
 $content = $contentFactory->initialize("testdata/input.xml");
 $ret = ContentValidator::validate($content);
 $contentHelper = new ContentHelper($content);
-$contentHelper->matchCounters();
+$contentHelper->matchCounters();*/
+
+$pappsRequestFactory = new PappsRequestFactory();
+$pappsRequest = $pappsRequestFactory->initialize("testdata/new_input.xml");
+$pappsRequestHandler = new PappsRequestHandler($pappsRequest);
+$pappsRequestHandler->match();
+//print_r($pappsRequest);
 ?>
