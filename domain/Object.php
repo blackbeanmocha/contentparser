@@ -6,7 +6,7 @@ class Object{
     public $objectLabel;
     public $objectType;
     public $objectString;
-    public $objectOperator;
+    public $logicalOperator;
     public $objectLogFiles;
     public $objectDescription;
     public $objectThreshold;
@@ -27,7 +27,7 @@ class Object{
         $this->objectLabel = $builder->getObjectLabel();
         $this->objectType = $builder->getObjectType();
         $this->objectString = $builder->getObjectString();
-        $this->objectOperator = $builder->getObjectOperator();
+        $this->logicalOperator = $builder->getLogicalOperator();
         $this->objectLogFiles = $builder->getObjectLogFiles();
         $this->objectDescription = $builder->getObjectDescription();
         $this->objectThreshold = $builder->getObjectThreshold();

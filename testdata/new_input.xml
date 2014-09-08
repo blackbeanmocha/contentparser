@@ -27,7 +27,7 @@
       <object_label>dup_session</object_label>
       <object_type>global_counter</object_type>
       <object_string>session_dup_pkt_drop</object_string>
-	  <object_operator>and</object_operator>
+	  <logical_operator>and</logical_operator>
       <object_log_files/>
       <object_description/>
       <object_treshold>1</object_treshold>
@@ -43,7 +43,7 @@
       <object_label>install_error</object_label>
       <object_type>global_counter</object_type>
       <object_string>session_install_error</object_string>
-	  <object_operator>or</object_operator>
+	  <logical_operator>or</logical_operator>
       <object_log_files/>
       <object_description/>
       <object_treshold>1</object_treshold>

@@ -74,7 +74,7 @@ class PappsRequestHandler
         print_r($resultMap);
 
         // Apply object operator to get final output
-        $showResult = $this->applyObjectOperators($resultMap);
+        $showResult = $this->applyLogicalOperators($resultMap);
 
         if (!$showResult) {
             print "\n Criteria is not matched !!\n";
@@ -87,7 +87,7 @@ class PappsRequestHandler
         $this->clean($extractedPath);
     }
 
-    public function applyObjectOperators($resultMap)
+    public function applyLogicalOperators($resultMap)
     {
         $prevOperator = NULL;
         $isValid = false;
@@ -111,7 +111,7 @@ class PappsRequestHandler
                 $currCounter = $objectCounter->getCounter();
 
                 if (!isset($prevOperator)) {
-                    $prevOperator = $objectCounter->object->objectOperator;
+                    $prevOperator = $objectCounter->object->logicalOperator;
                     $isValid = isset($currCounter) & ($currCounter > 0 ? true : false);
                     continue;
                 }

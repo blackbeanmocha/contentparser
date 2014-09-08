@@ -17,8 +17,10 @@ class PappsRequestFactory {
         $data = simplexml_load_file($inputFile);
 
         $pappsRequestBuilder = PappsRequest::createBuilder()
-            ->requestId((string)$data->request_id)->requestLabel((string)$data->request_label)->caseId((string)$data->case_id)
-            ->tsPath((string)$data->ts_file)->xmlRequest((string)$data->xml_request)->xmlResult((string)$data->xml_result)->userName((string)$data->username)
+            ->requestId((string)$data->request_id)->requestLabel((string)$data->request_label)
+            ->caseId((string)$data->case_id)->tsPath((string)$data->ts_file)
+            ->xmlRequest((string)$data->xml_request)->xmlResult((string)$data->xml_result)
+            ->userName((string)$data->username)
             ->startTime((string)$data->request_timerange_start)->endTime((string)$data->request_timerange_end)
             ->requestStartTime((string)$data->request_time)->requestCompleteTime((string)$data->complete_time)
             ->requestTestToggle((string)$data->request_test_toggle);
@@ -57,7 +59,7 @@ class PappsRequestFactory {
                 $object = $profile->$objectTag;
                 $objectBuilder = Object::createBuilder()
                     ->objectId((string)$object->object_id)->objectLabel((string)$object->object_label)->objectType((string)$object->object_type)
-                    ->objectString((string)$object->object_string)->objectOperator((string)$object->object_operator)->objectLogFiles((string)$object->object_log_files)
+                    ->objectString((string)$object->object_string)->logicalOperator((string)$object->logical_operator)->objectLogFiles((string)$object->object_log_files)
                     ->objectDescription((string)$object->object_description)->objectThreshold((string)$object->object_treshold)->objectThresholdOperator((string)$object->object_treshold_operator)
                     ->objectTimeWindow((string)$object->object_time_window)
                     ->createdBy((string)$object->object_created_by)->createdDate((string)$object->object_create_date)

@@ -12,7 +12,7 @@ class ObjectBuilder {
     private $objectLabel;
     private $objectType;
     private $objectString;
-    private $objectOperator;
+    private $logicalOperator;
     private $objectLogFiles;
     private $objectDescription;
     private $objectThreshold;
@@ -107,12 +107,12 @@ class ObjectBuilder {
     }
 
     /**
-     * @param mixed $objectOperator
+     * @param mixed $logicalOperator
      * @return ObjectBuilder builder object
      */
-    function objectOperator($objectOperator)
+    function logicalOperator($logicalOperator)
     {
-        $this->objectOperator = $objectOperator;
+        $this->logicalOperator = $logicalOperator;
         return $this;
     }
 
@@ -233,9 +233,9 @@ class ObjectBuilder {
     /**
      * @return mixed
      */
-    function getObjectOperator()
+    function getLogicalOperator()
     {
-        return $this->objectOperator;
+        return $this->logicalOperator;
     }
 
     /**
