@@ -10,5 +10,8 @@ class ParserConstants {
   const SAMPLING_RATE_SPLIT_PATTERN = "/(\d+.\d+)/";
   const MONITOR_FILES_PATTERN = "*dp-monitor*";
   const COUNTER_STMT_SPLIT_PATTERN = "/[\s::]+/";
+  const TS_FILES_PATH = "/tmp/www/parcs/parcs_papps/ts_files"; //TS_FILES path;
+  const INPUT_XML = "/tmp/www/parcs/parcs_papps/queue/papps_request-%s-input.xml"; //Request id_userid_input.xml;
+  const OUTPUT_XML= "/tmp/www/parcs/parcs_papps/queue/papps_request-%s-output.xml"; //Request id_userid_input.xml;
 }
 ?>

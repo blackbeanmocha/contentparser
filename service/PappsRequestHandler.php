@@ -1,5 +1,6 @@
 <?php
 date_default_timezone_set('America/Los_Angeles');
+ini_set('memory_limit', '-1');
 
 class PappsRequestHandler
 {
@@ -22,13 +23,11 @@ class PappsRequestHandler
 
         }
 
-        //$pattern .= '--- panio'. '|Elapsed time since last sampling';
-
         $pattern .= ParserConstants::GLOBAL_PANIO_STMT . '|' . ParserConstants::SAMPLING_RATE_STMT;
 
         print "\n Pattern: $pattern \n";
 
-        $extractedPath = "I_Donno";
+        $extractedPath = $this->extractTar();
 
         //$command = "find $extractedPath -name '*dp-monitor*' -print | xargs egrep -wri -h '$pattern' ";
         $command = "find $extractedPath -name \"" . ParserConstants::MONITOR_FILES_PATTERN . "\" -print | xargs egrep -wri -h '$pattern' ";
@@ -81,9 +80,11 @@ class PappsRequestHandler
             print "\n Criteria is not matched !!\n";
         }
 
-        $file = "testdata/output.xml";
+        $outputFile = str_replace("%s", $this->pappsRequest->requestId ,ParserConstants::OUTPUT_XML);
         $xml = XMLSerializer::generateValidXmlFromArray($resultMap);
-        file_put_contents($file, $xml);
+        file_put_contents($outputFile, $xml);
+
+        $this->clean($extractedPath);
     }
 
     public function applyObjectOperators($resultMap)
@@ -161,6 +162,38 @@ class PappsRequestHandler
             return true;
         }
         return false;
+    }
+
+    public function extractTar() {
+
+        $path = ParserConstants::TS_FILES_PATH;
+        $pathTo = "";
+        if (isset($this->pappsRequest->tsPath)) {
+            $pathTo = $path."/".$this->pappsRequest->userName."-".
+                $this->pappsRequest->requestId."-".preg_replace('/\\.[^.\\s]{3,4}$/', '', $this->pappsRequest->tsPath);
+            $path = $path . "/" . $this->pappsRequest->tsPath;
+
+            if(!file_exists($path)) {
+                die("File: $path doesn't exist");
+            }
+            try {
+                $tech_support = new PharData($path);
+                print "Extracting the tech support file..Have patience!\n";
+                $tech_support->extractTo($pathTo, null, true);
+                print "Thank you for your patience. You can view the files now in $pathTo \n";
+            } catch (Exception $e) {
+                print "$e \n";
+            }
+
+        }
+
+        return $pathTo;
+    }
+
+    public function clean($extractedPath) {
+
+        // delete extracted folder
+        system('/bin/rm -rf ' . escapeshellarg($extractedPath));
     }
 
 }
