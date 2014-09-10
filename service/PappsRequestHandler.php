@@ -54,7 +54,7 @@ class PappsRequestHandler
         foreach ($results as $match) {
 
 
-            if (!$considerTimeRange || strpos($match, ParserConstants::GLOBAL_PANIO_STMT) !== false) {
+            if (!$considerTimeRange && strpos($match, ParserConstants::GLOBAL_PANIO_STMT) !== false) {
                 preg_match(ParserConstants::GLOBAL_PANIO_SPLIT_PATTERN, $match, $timeDetails);
                 $currTime = trim($timeDetails[0]);
                 $isValidTime = $this->isValidTime($currTime);
