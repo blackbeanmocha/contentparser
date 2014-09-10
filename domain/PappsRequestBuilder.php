@@ -68,7 +68,8 @@ class PappsRequestBuilder {
      */
     function endTime($endTime)
     {
-        $this->endTime = date("M d H:i:s", strtotime($endTime));
+        //$this->endTime = date("M d H:i:s", strtotime($endTime));
+        $this->endTime = $endTime;
         return $this;
     }
 
@@ -118,7 +119,8 @@ class PappsRequestBuilder {
      */
     function startTime($startTime)
     {
-        $this->startTime = date("M d H:i:s", strtotime($startTime));
+        //$this->startTime = date("M d H:i:s", strtotime($startTime));
+        $this->startTime = $startTime;
         return $this;
     }
 

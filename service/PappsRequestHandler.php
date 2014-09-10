@@ -45,16 +45,17 @@ class PappsRequestHandler
         // If start time or end time is not defined
         // search entire file.
         $considerTimeRange = true;
-        if(!isset($this->pappsRequest->startTime) ||
-            !isset($this->pappsRequest->endTime)) {
+
+        if(!$this->isValidDateTimeString($this->pappsRequest->startTime, "Y-m-d H:i:s", "America/Los_Angeles")
+           || !$this->isValidDateTimeString($this->pappsRequest->startTime, "Y-m-d H:i:s", "America/Los_Angeles")) {
             $considerTimeRange = false;
             $isValidTime = true;
         }
 
         foreach ($results as $match) {
 
-
-            if (!$considerTimeRange && strpos($match, ParserConstants::GLOBAL_PANIO_STMT) !== false) {
+            if ($considerTimeRange &&
+                strpos($match, ParserConstants::GLOBAL_PANIO_STMT) !== false) {
                 preg_match(ParserConstants::GLOBAL_PANIO_SPLIT_PATTERN, $match, $timeDetails);
                 $currTime = trim($timeDetails[0]);
                 $isValidTime = $this->isValidTime($currTime);
@@ -197,6 +198,13 @@ class PappsRequestHandler
         }
 
         return $pathTo;
+    }
+
+    // http://www.pontikis.net/tip/?id=21
+    function isValidDateTimeString($str_dt, $str_dateformat, $str_timezone) {
+        $date = DateTime::createFromFormat($str_dateformat, $str_dt, new DateTimeZone($str_timezone));
+        var_dump($date);
+        return $date && DateTime::getLastErrors()["warning_count"] == 0 && DateTime::getLastErrors()["error_count"] == 0;
     }
 
     public function clean($extractedPath) {
