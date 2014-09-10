@@ -5,9 +5,9 @@ class ParserConstants {
   const TYPE = "type";
   const LOGICAL_OP = "logicalOp";
   const GLOBAL_PANIO_STMT = "--- panio";
-  const GLOBAL_PANIO_SPLIT_PATTERN = "/[---]/";
+  const GLOBAL_PANIO_SPLIT_PATTERN = "/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/";
   const SAMPLING_RATE_STMT = "Elapsed time since last sampling";
-  const SAMPLING_RATE_SPLIT_PATTERN = "/(\d+.\d+)/";
+  const SAMPLING_RATE_SPLIT_PATTERN = "/\d+(.\d+)?/";
   const MONITOR_FILES_PATTERN = "*dp-monitor*";
   const COUNTER_STMT_SPLIT_PATTERN = "/[\s::]+/";
   const TS_FILES_PATH = "/tmp/www/parcs/parcs_papps/ts_files"; //TS_FILES path;

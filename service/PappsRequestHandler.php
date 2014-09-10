@@ -45,8 +45,8 @@ class PappsRequestHandler
         foreach ($results as $match) {
 
             if (strpos($match, ParserConstants::GLOBAL_PANIO_STMT) !== false) {
-                $timeDetails = preg_split(ParserConstants::GLOBAL_PANIO_SPLIT_PATTERN, $match);
-                $currTime = trim(trim($timeDetails[0]), ":");
+                preg_match(ParserConstants::GLOBAL_PANIO_SPLIT_PATTERN, $match, $timeDetails);
+                $currTime = trim($timeDetails[0]);
                 $isValidTime = $this->isValidTime($currTime);
             }
 
@@ -56,7 +56,7 @@ class PappsRequestHandler
                 $isValidSamplingRate = $this->isValidSamplingRate($samplingRate);
             }
 
-            //print "\n isValidTime: $isValidTime && isValidSamplingRate: $isValidSamplingRate \n";
+            //print "\n isValidTime: $isValidTime && isValidSamplingRate: $isValidSamplingRate \t match:$match\n";
 
             if ($isValidTime && $isValidSamplingRate) {
                 $matchers = preg_split(ParserConstants::COUNTER_STMT_SPLIT_PATTERN, $match);
@@ -98,12 +98,12 @@ class PappsRequestHandler
         $objStringPostionMap = array();
         foreach ($this->pappsRequest->profiles as $profile) {
             foreach ($profile->objects as $object) {
-                $currpos = $objStringPostionMap[$object->objectString];
-                if ($currpos == null) {
-                    $currpos = 0;
-                } else {
+                $currpos = 0;
+                if (array_key_exists($object->objectString,$objStringPostionMap)) {
+                    $currpos = $objStringPostionMap[$object->objectString];
                     $currpos = $currpos + 1;
                 }
+
                 $objStringPostionMap[$object->objectString] = $currpos;
                 $objCounters = $resultMap[$object->objectString];
                 $objectCounter = $objCounters[$currpos];
