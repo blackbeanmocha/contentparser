@@ -42,9 +42,19 @@ class PappsRequestHandler
         $isValidTime = false;
         $isValidSamplingRate = false;
 
+        // If start time or end time is not defined
+        // search entire file.
+        $considerTimeRange = true;
+        if(!isset($this->pappsRequest->startTime) ||
+            !isset($this->pappsRequest->endTime)) {
+            $considerTimeRange = false;
+            $isValidTime = true;
+        }
+
         foreach ($results as $match) {
 
-            if (strpos($match, ParserConstants::GLOBAL_PANIO_STMT) !== false) {
+
+            if (!$considerTimeRange || strpos($match, ParserConstants::GLOBAL_PANIO_STMT) !== false) {
                 preg_match(ParserConstants::GLOBAL_PANIO_SPLIT_PATTERN, $match, $timeDetails);
                 $currTime = trim($timeDetails[0]);
                 $isValidTime = $this->isValidTime($currTime);
@@ -146,12 +156,6 @@ class PappsRequestHandler
 
     public function isValidTime($currTime)
     {
-        // If start time or end time is not defined
-        // search entire file.
-        if(!isset($this->pappsRequest->startTime) ||
-            !isset($this->pappsRequest->endTime)) {
-            return true;
-        }
         if (strtotime($this->pappsRequest->startTime) <= strtotime($currTime)
             && strtotime($this->pappsRequest->endTime) >= strtotime($currTime)
         ) {

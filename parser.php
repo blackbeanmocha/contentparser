@@ -17,5 +17,5 @@ $inputFile  = "/var/www/parcs/parcs_papps/queue/papps_request-8-input.xml";
 $pappsRequest = $pappsRequestFactory->initialize($inputFile);
 $pappsRequestHandler = new PappsRequestHandler($pappsRequest);
 $pappsRequestHandler->match();
-
+//system('/bin/rm -f ' . escapeshellarg($inputFile));
 ?>
