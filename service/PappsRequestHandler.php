@@ -71,7 +71,7 @@ class PappsRequestHandler
 
             if ($isValidTime && $isValidSamplingRate) {
                 $matchers = preg_split(ParserConstants::COUNTER_STMT_SPLIT_PATTERN, $match);
-                $objCounters = $resultMap[$matchers[1]];
+                $objCounters = isset($resultMap[$matchers[1]]) ? $resultMap[$matchers[1]] : array();
 
                 if (sizeof($objCounters) > 0) {
                     foreach ($objCounters as $objCounter) {
@@ -203,8 +203,13 @@ class PappsRequestHandler
     // http://www.pontikis.net/tip/?id=21
     function isValidDateTimeString($str_dt, $str_dateformat, $str_timezone) {
         $date = DateTime::createFromFormat($str_dateformat, $str_dt, new DateTimeZone($str_timezone));
-        var_dump($date);
-        return $date && DateTime::getLastErrors()["warning_count"] == 0 && DateTime::getLastErrors()["error_count"] == 0;
+        if($date) {
+            $errors = DateTime::getLastErrors();
+            if($errors["warning_count"] == 0 && $errors["error_count"] == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function clean($extractedPath) {
