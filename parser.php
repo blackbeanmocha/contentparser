@@ -13,7 +13,7 @@ foreach ($CLASSES_DIR as $dir) {
 }
 
 $pappsRequestFactory = new PappsRequestFactory();
-$inputFile  = "/tmp/www/parcs/parcs_papps/queue/papps_request-8-input.xml";
+$inputFile  = "/var/www/parcs/parcs_papps/queue/papps_request-8-input.xml";
 $pappsRequest = $pappsRequestFactory->initialize($inputFile);
 $pappsRequestHandler = new PappsRequestHandler($pappsRequest);
 $pappsRequestHandler->match();

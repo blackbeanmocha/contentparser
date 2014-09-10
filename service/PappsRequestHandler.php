@@ -146,7 +146,12 @@ class PappsRequestHandler
 
     public function isValidTime($currTime)
     {
-
+        // If start time or end time is not defined
+        // search entire file.
+        if(!isset($this->pappsRequest->startTime) ||
+            !isset($this->pappsRequest->endTime)) {
+            return true;
+        }
         if (strtotime($this->pappsRequest->startTime) <= strtotime($currTime)
             && strtotime($this->pappsRequest->endTime) >= strtotime($currTime)
         ) {
