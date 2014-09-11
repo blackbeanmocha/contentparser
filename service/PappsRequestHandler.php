@@ -6,10 +6,124 @@ class PappsRequestHandler
 {
 
     private $pappsRequest;
+    private $resultMap;
 
     public function __construct($pappsRequest)
     {
         $this->pappsRequest = $pappsRequest;
+    }
+
+
+    function matchObject($objectString, $objectLogFiles, $considerTimeRange, $extractedPath) {
+
+        $pattern = ":" . $objectString ;
+        $pattern .=  '|' . ParserConstants::GLOBAL_PANIO_STMT . '|' . ParserConstants::SAMPLING_RATE_STMT;
+
+        print "\n Pattern: $pattern \n";
+
+        $logFilesArray = explode(",", $objectLogFiles);
+
+        $logFilesPattern = "";
+
+        if(count($logFilesArray) == 1) {
+            $logFilesPattern .= "-name \"*$objectLogFiles*\" ";
+        } else {
+            $logFilesPattern .= "\\( ";
+            foreach($logFilesArray as $filePattern) {
+                $logFilesPattern .= "-name \"*$filePattern\" -o ";
+            }
+            $logFilesPattern = rtrim($logFilesPattern, " -o");
+            $logFilesPattern .= " \\)";
+        }
+
+        $command = "find $extractedPath $logFilesPattern -print | xargs egrep -wri -h '$pattern' ";
+        $results = SystemUtil::executeCommand($command);
+
+        $resultMap = $this->getResultMap();
+
+        $isValidTime = false;
+        $isValidSamplingRate = false;
+
+        //print "Consider Time Range: $considerTimeRange";
+
+        if(!$considerTimeRange) {
+            $isValidTime = true;
+        }
+
+        foreach ($results as $match) {
+
+            if ($considerTimeRange &&
+                strpos($match, ParserConstants::GLOBAL_PANIO_STMT) !== false) {
+                preg_match(ParserConstants::GLOBAL_PANIO_SPLIT_PATTERN, $match, $timeDetails);
+                $currTime = trim($timeDetails[0]);
+                $isValidTime = $this->isValidTime($currTime);
+            }
+
+            if (strpos($match, ParserConstants::SAMPLING_RATE_STMT) && $isValidTime) {
+                preg_match(ParserConstants::SAMPLING_RATE_SPLIT_PATTERN, $match, $samplingDetails);
+                $samplingRate = $samplingDetails[0];
+                $isValidSamplingRate = $this->isValidSamplingRate($samplingRate);
+            }
+
+            //print "\n isValidTime: $isValidTime && isValidSamplingRate: $isValidSamplingRate \t match:$match\n";
+
+            if ($isValidTime && $isValidSamplingRate) {
+                $matchers = preg_split(ParserConstants::COUNTER_STMT_SPLIT_PATTERN, $match);
+
+                //print "\n isValidTime: $isValidTime && isValidSamplingRate: $isValidSamplingRate \t match:$match\n";
+
+                $objCounters = isset($resultMap[$matchers[1]]) ? $resultMap[$matchers[1]] : array();
+
+                if (sizeof($objCounters) > 0) {
+                    foreach ($objCounters as $objCounter) {
+                        $objCounter->validateOccurence($matchers[2]);
+                    }
+                }
+            }
+        }
+    }
+
+
+    function matchAll() {
+
+        $extractedPath = $this->extractTar();
+        $resultMap = $this->getResultMap();
+        print "\n Before Parsing: \n";
+        print_r($resultMap);
+
+        $considerTimeRange = true;
+
+        if(!$this->isValidDateTimeString($this->pappsRequest->startTime)
+            || !$this->isValidDateTimeString($this->pappsRequest->startTime)) {
+            $considerTimeRange = false;
+        }
+
+        foreach ($this->pappsRequest->profiles as $profile) {
+            foreach ($profile->objects as $object) {
+                print "\n now parsing $object->objectString \n";
+                $logFile = (isset($object->objectLogFiles) && !empty($object->objectLogFiles)) ? $object->objectLogFiles : "dp-monitor";
+                $this->matchObject($object->objectString, $logFile, $considerTimeRange, $extractedPath);
+            }
+
+        }
+
+        $resultMap = $this->getResultMap();
+
+        print "\n After Parsing: \n";
+        print_r($resultMap);
+
+        // Apply object operator to get final output
+        $showResult = $this->applyLogicalOperators($resultMap);
+
+        if (!$showResult) {
+            print "\n Criteria is not matched !!\n";
+        }
+
+        $outputFile = str_replace("%s", $this->pappsRequest->requestId ,ParserConstants::OUTPUT_XML);
+        $xml = XMLSerializer::generateValidXmlFromArray($resultMap);
+        file_put_contents($outputFile, $xml);
+
+        $this->clean($extractedPath);
     }
 
     function match()
@@ -140,19 +254,21 @@ class PappsRequestHandler
 
     public function getResultMap()
     {
-        $resultMap = array();
-        foreach ($this->pappsRequest->profiles as $profile) {
-            foreach ($profile->objects as $object) {
-                $key = $object->objectString;
-                $value = $resultMap[$key];
-                if ($value == null) {
-                    $value = array();
+        if (!isset($this->resultMap) || empty($this->resultMap)) {
+            $this->resultMap = array();
+            foreach ($this->pappsRequest->profiles as $profile) {
+                foreach ($profile->objects as $object) {
+                    $key = $object->objectString;
+                    $value = $this->resultMap[$key];
+                    if ($value == null) {
+                        $value = array();
+                    }
+                    array_push($value, new ObjectCounter($object));
+                    $this->resultMap[$key] = $value;
                 }
-                array_push($value, new ObjectCounter($object));
-                $resultMap[$key] = $value;
             }
         }
-        return $resultMap;
+        return $this->resultMap;
     }
 
     public function isValidTime($currTime)
@@ -203,16 +319,12 @@ class PappsRequestHandler
 
     function isValidDateTimeString($str_dt)
     {
-        print "\nGot: $str_dt \n";
+        //print "\nGot: $str_dt \n";
         preg_match("/(0{4})-(0{2})-(0{2}) (0{2}):(0{2}):(0{2})/", $str_dt, $validDate);
-        print "\n";
-        print_r($validDate);
-        print "\n";
         if (isset($validDate) && !empty($validDate)) {
             print "\n woohoo !\n";
             return false;
         }
-        print "\n I am here \n";
         return true;
     }
 
