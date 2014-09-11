@@ -46,8 +46,8 @@ class PappsRequestHandler
         // search entire file.
         $considerTimeRange = true;
 
-        if(!$this->isValidDateTimeString($this->pappsRequest->startTime, "Y-m-d H:i:s", "America/Los_Angeles")
-           || !$this->isValidDateTimeString($this->pappsRequest->startTime, "Y-m-d H:i:s", "America/Los_Angeles")) {
+        if(!$this->isValidDateTimeString($this->pappsRequest->startTime)
+           || !$this->isValidDateTimeString($this->pappsRequest->startTime)) {
             $considerTimeRange = false;
             $isValidTime = true;
         }
@@ -200,16 +200,20 @@ class PappsRequestHandler
         return $pathTo;
     }
 
-    // http://www.pontikis.net/tip/?id=21
-    function isValidDateTimeString($str_dt, $str_dateformat, $str_timezone) {
-        $date = DateTime::createFromFormat($str_dateformat, $str_dt, new DateTimeZone($str_timezone));
-        if($date) {
-            $errors = DateTime::getLastErrors();
-            if($errors["warning_count"] == 0 && $errors["error_count"] == 0) {
-                return true;
-            }
+
+    function isValidDateTimeString($str_dt)
+    {
+        print "\nGot: $str_dt \n";
+        preg_match("/(0{4})-(0{2})-(0{2}) (0{2}):(0{2}):(0{2})/", $str_dt, $validDate);
+        print "\n";
+        print_r($validDate);
+        print "\n";
+        if (isset($validDate) && !empty($validDate)) {
+            print "\n woohoo !\n";
+            return false;
         }
-        return false;
+        print "\n I am here \n";
+        return true;
     }
 
     public function clean($extractedPath) {
